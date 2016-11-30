@@ -1,4 +1,4 @@
-package services
+package main
 
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class PocketMathService @Inject()(config: Configuration, wsClient: WSClient) {
+class PocketMath @Inject()(config: Configuration, wsClient: WSClient) {
 
   lazy val maybePocketMathHost = config.getString("pocketmath.host")
   lazy val maybeTradersEndpoint = config.getString("pocketmath.endpoint.traders")
@@ -39,12 +39,12 @@ class PocketMathService @Inject()(config: Configuration, wsClient: WSClient) {
         }
       } recover {
         case t: Throwable =>
-          Logger.error("exception while fetching traders")
+          Logger.error("exception while fetching data")
           t.printStackTrace
           None
       }
     } else {
-      Logger.info("No traders found")
+      Logger.info("No data found")
       Future.successful(None)
     }
   }
@@ -69,13 +69,13 @@ class PocketMathService @Inject()(config: Configuration, wsClient: WSClient) {
           Future.successful(None)
       } recover {
         case t: Throwable =>
-          Logger.error("exception while fetching transactions")
+          Logger.error("exception while fetching data")
           t.printStackTrace
           Future.successful(None)
       }
       eventualResult.flatMap(f => f)
     } else {
-      Logger.info("No transactions found")
+      Logger.info("No data found")
       Future.successful(None)
     }
   }
@@ -100,12 +100,12 @@ class PocketMathService @Inject()(config: Configuration, wsClient: WSClient) {
         }
       } recover {
         case t: Throwable =>
-          Logger.error("exception while fetching transactions")
+          Logger.error("exception while fetching data")
           t.printStackTrace
           None
       }
     } else {
-      Logger.info("No transactions found")
+      Logger.info("No Data found")
       Future.successful(None)
     }
   }
@@ -132,12 +132,12 @@ class PocketMathService @Inject()(config: Configuration, wsClient: WSClient) {
         }
       } recover {
         case t: Throwable =>
-          Logger.error("exception while fetching transactions")
+          Logger.error("exception while fetching data")
           t.printStackTrace
           None
       }
     } else {
-      Logger.info("No transactions found")
+      Logger.info("No Data found")
       Future.successful(None)
     }
   }
