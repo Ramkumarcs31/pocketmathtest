@@ -14,23 +14,23 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PocketMath @Inject()(config: Configuration, wsClient: WSClient) {
 
-  lazy val maybePocketMathHost = config.getString("pocketmath.host")
-  lazy val maybeTradersEndpoint = config.getString("pocketmath.endpoint.traders")
-  lazy val maybeTransactionsEndpoint = config.getString("pocketmath.endpoint.transactions")
-  lazy val maybeApiKey = config.getString("pocketmath.apiKey")
+  lazy val PocketMathHost = config.getString("pocketmath.host")
+  lazy val TradersEndpoint = config.getString("pocketmath.endpoint.traders")
+  lazy val TransactionsEndpoint = config.getString("pocketmath.endpoint.transactions")
+  lazy val ApiKey = config.getString("pocketmath.apiKey")
 
-  def  getTraders(maybeCity: Option[String]): Future[Option[List[Trader]]] = {
-    if (maybePocketMathHost.isDefined && maybeTradersEndpoint.isDefined && maybeApiKey.isDefined) {
-      val eventualWSResponse = wsClient.url(maybePocketMathHost.get + maybeTradersEndpoint.get).
+  def  getTraders(City: Option[String]): Future[Option[List[Trader]]] = {
+    if (PocketMathHost.isDefined && TradersEndpoint.isDefined && ApiKey.isDefined) {
+      val eventualWSResponse = wsClient.url(PocketMathHost.get + TradersEndpoint.get).
         withRequestTimeout(5000 milliseconds).
-        withHeaders("x-api-key" -> maybeApiKey.get).
+        withHeaders("x-api-key" -> ApiKey.get).
         get()
       eventualWSResponse map { wsResponse =>
-        val maybeTraders: Option[List[Trader]] = Json.parse(wsResponse.json.toString).asOpt[List[Trader]]
-        maybeTraders match {
+        val Traders: Option[List[Trader]] = Json.parse(wsResponse.json.toString).asOpt[List[Trader]]
+        Traders match {
           case Some(traders) =>
-            if(maybeCity.isDefined) {
-              Some(traders.filter(_.city.toLowerCase == maybeCity.get.toLowerCase).sortBy(f => f.name))
+            if(City.isDefined) {
+              Some(traders.filter(_.city.toLowerCase == City.get.toLowerCase).sortBy(f => f.name))
             } else {
               Some(traders)
             }
@@ -49,15 +49,15 @@ class PocketMath @Inject()(config: Configuration, wsClient: WSClient) {
     }
   }
 
-  def getTransactionsAvg(maybeCity: Option[String]): Future[Option[Double]] = {
-    if (maybePocketMathHost.isDefined & maybeTransactionsEndpoint.isDefined && maybeApiKey.isDefined) {
-      val eventualResult = getTraders(maybeCity) map {
+  def getTransactionsAvg(City: Option[String]): Future[Option[Double]] = {
+    if (PocketMathHost.isDefined & TransactionsEndpoint.isDefined && ApiKey.isDefined) {
+      val eventualResult = getTraders(City) map {
         case Some(traders) =>
           getTransactions(None) map {
             case Some(transactions) =>
               var tradersList = traders.map(_.id)
-              if (maybeCity.isDefined) {
-                tradersList = traders.filter(_.city.toLowerCase == maybeCity.get.toLowerCase).map(_.id)
+              if (City.isDefined) {
+                tradersList = traders.filter(_.city.toLowerCase == City.get.toLowerCase).map(_.id)
                 Some((transactions.filter(p => tradersList.contains(p.traderId)).map(_.value).sum) / tradersList.size)
               } else {
                 Some(transactions.map(_.value).sum / transactions.size)
@@ -80,18 +80,18 @@ class PocketMath @Inject()(config: Configuration, wsClient: WSClient) {
     }
   }
 
-  def getTransactions(maybeYear: Option[Int]): Future[Option[List[Transaction]]] = {
-    if (maybePocketMathHost.isDefined & maybeTransactionsEndpoint.isDefined && maybeApiKey.isDefined) {
-      val eventualWSResponse = wsClient.url(maybePocketMathHost.get + maybeTransactionsEndpoint.get).
+  def getTransactions(Year: Option[Int]): Future[Option[List[Transaction]]] = {
+    if (PocketMathHost.isDefined & TransactionsEndpoint.isDefined && ApiKey.isDefined) {
+      val eventualWSResponse = wsClient.url(PocketMathHost.get + TransactionsEndpoint.get).
         withRequestTimeout(5000 milliseconds).
-        withHeaders("x-api-key" -> maybeApiKey.get).
+        withHeaders("x-api-key" -> ApiKey.get).
         get()
       eventualWSResponse map { wsResponse =>
-        val maybeTransactions = Json.parse(wsResponse.json.toString).asOpt[List[Transaction]]
-        maybeTransactions match {
+        val Transactions = Json.parse(wsResponse.json.toString).asOpt[List[Transaction]]
+        Transactions match {
           case Some(transactions) =>
-            if(maybeYear.isDefined) {
-              Some(transactions.filter(f => new DateTime(f.timestamp * 1000L).getYear == maybeYear.get).sortBy(-_.value))
+            if(Year.isDefined) {
+              Some(transactions.filter(f => new DateTime(f.timestamp * 1000L).getYear == Year.get).sortBy(-_.value))
             } else {
               Some(transactions)
             }
@@ -111,14 +111,14 @@ class PocketMath @Inject()(config: Configuration, wsClient: WSClient) {
   }
 
   def getTransaction(value: String): Future[Option[Transaction]] = {
-    if (maybePocketMathHost.isDefined & maybeTransactionsEndpoint.isDefined && maybeApiKey.isDefined) {
-      val eventualWSResponse = wsClient.url(maybePocketMathHost.get + maybeTransactionsEndpoint.get).
+    if (PocketMathHost.isDefined & TransactionsEndpoint.isDefined && ApiKey.isDefined) {
+      val eventualWSResponse = wsClient.url(PocketMathHost.get + TransactionsEndpoint.get).
         withRequestTimeout(5000 milliseconds).
-        withHeaders("x-api-key" -> maybeApiKey.get).
+        withHeaders("x-api-key" -> ApiKey.get).
         get()
       eventualWSResponse map { wsResponse =>
-        val maybeTransactions = Json.parse(wsResponse.json.toString).asOpt[List[Transaction]]
-        maybeTransactions match {
+        val Transactions = Json.parse(wsResponse.json.toString).asOpt[List[Transaction]]
+        Transactions match {
           case Some(transactions) =>
             if(value == "high") {
               Some(transactions.sortBy(-_.value).head)
