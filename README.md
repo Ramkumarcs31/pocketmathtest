@@ -20,19 +20,18 @@ Code Structure:
   >pocketmathtest
   
     >models
-    
-      There are two different models: Traders & Transactions
+        There are two different models: Traders & Transactions
+        
     >views
-    
-      View is how to show the data. Nothing as of now.
-    >controllers
-    
+        View is how to show the data. Nothing as of now.
+        
+    >controllers   
       It controls the interaction between different models and views.
+      
     >main
-    
       It has four different methods for four different use cases
+      
     >conf
-    
       app configurations and api configurations
       
   Remaining files are play and heroku templates.
