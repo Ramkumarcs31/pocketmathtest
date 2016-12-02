@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /SingaporeTraders                           controllers.ApplicationController.traders("singapore")
+GET     /SingaporeTraders                           controllers.ApplicationController.traders(city: Option[String] ?= "Singapore")
 GET     /HighestTransaction                       controllers.ApplicationController.transaction(value: String ?= "high")
 GET     /2016transactions                      controllers.ApplicationController.transactions(year: Option[Int] ?= None)
 GET     /BeijingAverageTransactions                  controllers.ApplicationController.avgTransactions(city: Option[String] ?= None)
