@@ -4,16 +4,16 @@ This repository has scala code with play plug-in for the mentioned Api problem. 
 
 1> Find all traders from Singapore and sort them by name
     
-    https://pocketmathtestapp.herokuapp.com/SingaporeTraders
+    https://pocketmathtestapp.herokuapp.com/traders?city=singapore
 2> Find the transaction with the highest value
 
-    https://pocketmathtestapp.herokuapp.com/HighestTransaction
+    https://pocketmathtestapp.herokuapp.com/transaction?value=high
 3> Find all transactions in the year 2016 and sort them by value (high to small)
 
-    https://pocketmathtestapp.herokuapp.com/2016transactions
+    https://pocketmathtestapp.herokuapp.com/transactions?year=2016
 4> Find the average of transactions' values from the traders living in Beijing
 
-    https://pocketmathtestapp.herokuapp.com/BeijingAverageTransactions
+    https://pocketmathtestapp.herokuapp.com/avg_transactions?city=beijing
     
 Code Structure:
 
