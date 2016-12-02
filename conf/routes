@@ -1,11 +1,8 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
 
-GET     /Traders                           controllers.ApplicationController.traders(city: Option[String] ?= "None")
-GET     /Transaction                       controllers.ApplicationController.transaction(value: String ?= "high")
+GET     /traders                           controllers.ApplicationController.traders(city: Option[String] ?= None)
+GET     /transaction                       controllers.ApplicationController.transaction(value: String ?= "high")
 GET     /transactions                      controllers.ApplicationController.transactions(year: Option[Int] ?= None)
-GET     /AverageTransactions                  controllers.ApplicationController.avgTransactions(city: Option[String] ?= None)
+GET     /avg_transactions                  controllers.ApplicationController.avgTransactions(city: Option[String] ?= None)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
