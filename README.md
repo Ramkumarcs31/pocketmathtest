@@ -18,15 +18,22 @@ This repository has scala code with play plug-in for the mentioned Api problem. 
 Code Structure:
 
   >pocketmathtest
+  
     >models
+    
       There are two different models: Traders & Transactions
     >views
+    
       View is how to show the data. Nothing as of now.
     >controllers
+    
       It controls the interaction between different models and views.
-    >main 
+    >main
+    
       It has four different methods for four different use cases
     >conf
+    
       app configurations and api configurations
+      
   Remaining files are play and heroku templates.
       
